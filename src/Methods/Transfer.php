@@ -25,10 +25,8 @@ class Transfer extends BaseMethod
      */
     public string $amount;
     /**
-     * Unique ID to make your request idempotent and ensure that only one of the transfers with the same spend_id will
-     * be accepted by the Crypto Pay API. This parameter is useful when the transfer needs to be retried (e.g., request
-     * timeout, connection reset, 500 HTTP status, etc). It can be some unique withdrawal identifier, for example.
-     * Up to 64 symbols.
+     * Random UTF-8 string unique per transfer for idempotent requests. The same spend_id can be accepted only once
+     * from your app. Up to 64 symbols.
      * @var string
      */
     public string $spend_id;
@@ -48,9 +46,9 @@ class Transfer extends BaseMethod
      * Constructs a Transfer instance.
      *
      * @param int $user_id User's Telegram ID.
-     * @param string $asset Cryptocurrency code.
-     * @param string $amount Transfer amount as a string.
-     * @param string $spend_id Idempotent ID to uniquely identify the transfer.
+     * @param string $asset Cryptocurrency code. Supported assets: "BNB", "BONK", "BTC", "CATI", "DOGE", "DOGS", "ETH", "GRAM", "HMSTR", "LTC", "MAJOR", "MELANIA", "MEMHASH", "MY", "NOT", "PEPE", "SOL", "TON", "TRUMP", "TRX", "USDC", "USDT", "WIF".
+     * @param string $amount Transfer amount as a float string.
+     * @param string $spend_id Random UTF-8 string unique per transfer for idempotent requests. Up to 64 symbols.
      */
     public function __construct(int $user_id, string $asset, string $amount, string $spend_id)
     {
