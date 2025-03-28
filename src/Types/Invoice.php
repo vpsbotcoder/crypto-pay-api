@@ -58,23 +58,28 @@ class Invoice extends BaseType
      */
     public ?string $paid_fiat_rate = null;
     /**
-     * Optional. List of assets which can be used to pay the invoice.
-     * @var array|null
+     * Optional. List of assets which can be used to pay the invoice, separated by comma.
+     * Available only if currency_type is "fiat".
+     * Supported assets: "USDT", "TON", "BTC", "ETH", "LTC", "BNB", "TRX" and "USDC" (and "JET" for testnet).
+     * @var string|null
      */
-    public ?array $accepted_assets = null;
+    public ?string $accepted_assets = null;
     /**
      * Optional. Asset of service fees charged when the invoice was paid.
+     * Available only if status is "paid".
      * @var string|null
      */
     public ?string $fee_asset = null;
     /**
      * Optional. Amount of service fees charged when the invoice was paid.
-     * @var int|null
+     * Available only if status is "paid".
+     * @var string|float|null
      */
-    public ?int $fee_amount = null;
+    public $fee_amount = null;
     /**
-     * URL should be provided to the user to pay the invoice. Deprecated.
+     * Deprecated. URL should be provided to the user to pay the invoice.
      * @var string|null
+     * @deprecated Use bot_invoice_url, mini_app_invoice_url, or web_app_invoice_url instead.
      */
     public ?string $pay_url = null;
     /**
@@ -82,6 +87,16 @@ class Invoice extends BaseType
      * @var string 
      */
     public string $bot_invoice_url;
+    /**
+     * Use this URL to pay an invoice in the Telegram Mini App version.
+     * @var string
+     */
+    public string $mini_app_invoice_url;
+    /**
+     * Use this URL to pay an invoice in the Web version of Crypto Bot.
+     * @var string
+     */
+    public string $web_app_invoice_url;
     /**
      * Optional. Description for this invoice.
      * @var String|null
@@ -100,10 +115,12 @@ class Invoice extends BaseType
     /**
      * Optional. Price of the asset in USD. Deprecated.
      * @var string|null
+     * @deprecated Use paid_usd_rate instead.
      */
     public ?string $usd_rate  = null;
     /**
      * Optional. Price of the asset in USD.
+     * Available only if status is "paid".
      * @var string|null
      */
     public ?string $paid_usd_rate = null;
@@ -117,7 +134,6 @@ class Invoice extends BaseType
      * @var bool|null
      */
     public ?bool $allow_anonymous = null;
-
     /**
      * Optional. Date the invoice expires in ISO 8601 format.
      * @var string|null
