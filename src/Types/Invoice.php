@@ -71,11 +71,11 @@ class Invoice extends BaseType
      */
     public ?string $fee_asset = null;
     /**
-     * Optional. Amount of service fees charged when the invoice was paid.
+     * Optional. Amount of service fees charged when the invoice was paid in float string format.
      * Available only if status is "paid".
-     * @var string|float|null
+     * @var string|null
      */
-    public $fee_amount = null;
+    public ?string $fee_amount = null;
     /**
      * Deprecated. URL should be provided to the user to pay the invoice.
      * @var string|null
