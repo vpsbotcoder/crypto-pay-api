@@ -89,6 +89,7 @@ class CreateInvoice extends BaseMethod
      * @param string $amount The amount for the invoice (as a float string).
      * @param string $currency_type The type of currency: 'crypto' or 'fiat'. Defaults to 'crypto'.
      * @param string|null $asset_or_fiat The asset code (if currency_type is 'crypto') or fiat code (if currency_type is 'fiat'). Required based on currency_type.
+     * @throws \InvalidArgumentException When invalid parameters are provided.
      */
     public function __construct(string $amount, string $currency_type = 'crypto', ?string $asset_or_fiat = null)
     {
@@ -97,16 +98,18 @@ class CreateInvoice extends BaseMethod
 
         if ($currency_type === 'crypto') {
             if ($asset_or_fiat === null) {
-                // Consider throwing an exception if asset is required but not provided
-                // throw new \InvalidArgumentException('Asset is required when currency_type is "crypto"');
+                throw new \InvalidArgumentException('Asset is required when currency_type is "crypto"');
             }
             $this->asset = $asset_or_fiat;
+            $this->fiat = null; // Ensure fiat is null for crypto type
         } elseif ($currency_type === 'fiat') {
             if ($asset_or_fiat === null) {
-                // Consider throwing an exception if fiat is required but not provided
-                // throw new \InvalidArgumentException('Fiat is required when currency_type is "fiat"');
+                throw new \InvalidArgumentException('Fiat is required when currency_type is "fiat"');
             }
             $this->fiat = $asset_or_fiat;
+            $this->asset = null; // Ensure asset is null for fiat type
+        } else {
+            throw new \InvalidArgumentException('Invalid currency_type specified. Must be either "crypto" or "fiat".');
         }
     }
 }
