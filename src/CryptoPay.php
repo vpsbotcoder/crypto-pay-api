@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Klev\CryptoPayApi\Methods\CreateInvoice;
 use Klev\CryptoPayApi\Methods\GetInvoices;
 use Klev\CryptoPayApi\Methods\Transfer as MethodTransfer;
+use Klev\CryptoPayApi\Types\Balance;
 use Klev\CryptoPayApi\Types\Transfer as TypeTransfer;
 use Klev\CryptoPayApi\Types\Invoice;
 use Klev\CryptoPayApi\Types\Update;
@@ -141,17 +142,24 @@ class CryptoPay
     }
 
     /**
-     * Use this method to get a balance of your app. Returns array of assets.
+     * Use this method to get a balance of your app. Returns array of Balance objects.
      *
      * @link https://help.crypt.bot/crypto-pay-api#getBalance
      *
-     * @return array
+     * @return Balance[]
      * @throws CryptoPayException
      */
     public function getBalance(): array
     {
         $out = $this->request('getBalance');
-        return $out['result'];
+        
+        if (!isset($out['result']) || !is_array($out['result'])) {
+            return [];
+        }
+        
+        return array_map(static function($item) {
+            return new Balance($item);
+        }, $out['result']);
     }
 
     /**
