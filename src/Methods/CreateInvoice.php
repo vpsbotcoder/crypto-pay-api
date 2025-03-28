@@ -25,6 +25,13 @@ class CreateInvoice extends BaseMethod
      */
     public ?string $fiat = null;
     /**
+     * Optional. List of cryptocurrency alphabetic codes separated by comma. Assets which can be used to pay the invoice.
+     * Available only if currency_type is "fiat". Defaults to all currencies.
+     * Supported assets: "USDT", "TON", "BTC", "ETH", "LTC", "BNB", "TRX" and "USDC".
+     * @var string|null
+     */
+    public ?string $accepted_assets = null;
+    /**
      * Amount of the invoice in float. For example: 125.50
      * @var string
      */
@@ -42,10 +49,10 @@ class CreateInvoice extends BaseMethod
     public ?string $hidden_message = null;
     /**
      * Optional. Name of the button that will be shown to a user after the invoice is paid. Supported names:
-     * viewItem – “View Item”
-     * openChannel – “Open Channel”
-     * openBot – “Open Bot”
-     * callback – “Return”
+     * viewItem – "View Item"
+     * openChannel – "Open Channel"
+     * openBot – "Open Bot"
+     * callback – "Return"
      * @var string|null
      */
     public ?string $paid_btn_name = null;
@@ -64,29 +71,42 @@ class CreateInvoice extends BaseMethod
      * Optional. Allow a user to add a comment to the payment. Default is true.
      * @var bool|null
      */
-    public ?bool $allow_comments;
+    public ?bool $allow_comments = true;
     /**
      * Optional. Allow a user to pay the invoice anonymously. Default is true.
      * @var bool|null
      */
-    public ?bool $allow_anonymous;
+    public ?bool $allow_anonymous = true;
     /**
      * Optional. You can set a payment time limit for the invoice in seconds. Values between 1-2678400 are accepted.
      * @var int|null
      */
-    public ?int $expires_in;
+    public ?int $expires_in = null;
 
-    public function __construct(string $asset, string $amount, string $currency_type = 'crypto')
+    /**
+     * Constructor for creating an invoice.
+     *
+     * @param string $amount The amount for the invoice (as a float string).
+     * @param string $currency_type The type of currency: 'crypto' or 'fiat'. Defaults to 'crypto'.
+     * @param string|null $asset_or_fiat The asset code (if currency_type is 'crypto') or fiat code (if currency_type is 'fiat'). Required based on currency_type.
+     */
+    public function __construct(string $amount, string $currency_type = 'crypto', ?string $asset_or_fiat = null)
     {
         $this->amount = $amount;
         $this->currency_type = $currency_type;
 
         if ($currency_type === 'crypto') {
-            $this->asset = $asset;
-        }
-
-        if ($currency_type === 'fiat') {
-            $this->fiat = $asset;
+            if ($asset_or_fiat === null) {
+                // Consider throwing an exception if asset is required but not provided
+                // throw new \InvalidArgumentException('Asset is required when currency_type is "crypto"');
+            }
+            $this->asset = $asset_or_fiat;
+        } elseif ($currency_type === 'fiat') {
+            if ($asset_or_fiat === null) {
+                // Consider throwing an exception if fiat is required but not provided
+                // throw new \InvalidArgumentException('Fiat is required when currency_type is "fiat"');
+            }
+            $this->fiat = $asset_or_fiat;
         }
     }
 }
