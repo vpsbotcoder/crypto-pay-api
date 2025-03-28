@@ -26,14 +26,14 @@ class Invoice extends BaseType
     public string $currency_type;
     /**
      * Optional. Cryptocurrency code.
-     * Currently, can be “USDT”, “TON”, “BTC”, “ETH”, “LTC”, “BNB”, “TRX” and “USDC” (and “JET” for testnet).
+     * Currently, can be "BNB", "BONK", "BTC", "CATI", "DOGE", "DOGS", "ETH", "GRAM", "HMSTR", "LTC", "MAJOR", "MELANIA", "MEMHASH", "MY", "NOT", "PEPE", "SOL", "TON", "TRUMP", "TRX", "USDC", "USDT", "WIF".
      * @var string|null
      */
     public ?string $asset = null;
     /**
      * Optional. Fiat currency code.
-     * Currently one of “USD”, “EUR”, “RUB”, “BYN”, “UAH”, “GBP”, “CNY”, “KZT”, “UZS”, “GEL”, “TRY”, 
-     * “AMD”, “THB”, “INR”, “BRL”, “IDR”, “AZN”, “AED”, “PLN” and “ILS".
+     * Currently one of "USD", "EUR", "RUB", "BYN", "UAH", "GBP", "CNY", "KZT", "UZS", "GEL", "TRY", 
+     * "AMD", "THB", "INR", "BRL", "IDR", "AZN", "AED", "PLN" and "ILS".
      * @var string|null
      */
     public ?string $fiat = null;

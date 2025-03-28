@@ -10,14 +10,14 @@ namespace Klev\CryptoPayApi\Methods;
 class GetInvoices extends BaseMethod
 {
     /**
-     * Optional. Cryptocurrency codes separated by a comma. Supported assets: “USDT”, “TON”, “BTC”, “ETH”, “LTC”, “BNB”, “TRX” and “USDC” (and “JET” for testnet).
+     * Optional. Cryptocurrency codes separated by a comma. Supported assets: "BNB", "BONK", "BTC", "CATI", "DOGE", "DOGS", "ETH", "GRAM", "HMSTR", "LTC", "MAJOR", "MELANIA", "MEMHASH", "MY", "NOT", "PEPE", "SOL", "TON", "TRUMP", "TRX", "USDC", "USDT", "WIF".
      * Defaults to all assets if not specified.
      * @var string|null
      */
     public ?string $asset = null;
     /**
      * Optional. Fiat currency codes separated by a comma. 
-     * Supported fiat currencies: “USD”, “EUR”, “RUB”, “BYN”, “UAH”, “GBP”, “CNY”, “KZT”, “UZS”, “GEL”, “TRY”, “AMD”, “THB”, “INR”, “BRL”, “IDR”, “AZN”, “AED”, “PLN” and “ILS".
+     * Supported fiat currencies: "USD", "EUR", "RUB", "BYN", "UAH", "GBP", "CNY", "KZT", "UZS", "GEL", "TRY", "AMD", "THB", "INR", "BRL", "IDR", "AZN", "AED", "PLN" and "ILS".
      * This field is used when querying invoices processed in fiat currencies. Defaults to all fiat currencies if not specified.
      * @var string|null
      */

@@ -15,7 +15,7 @@ class Transfer extends BaseMethod
      */
     public int $user_id;
     /**
-     * Cryptocurrency code. Supported assets: “BTC”, “TON”, “ETH” (testnet only), “USDT”, “USDC”.
+     * Cryptocurrency code. Supported assets: "BNB", "BONK", "BTC", "CATI", "DOGE", "DOGS", "ETH", "GRAM", "HMSTR", "LTC", "MAJOR", "MELANIA", "MEMHASH", "MY", "NOT", "PEPE", "SOL", "TON", "TRUMP", "TRX", "USDC", "USDT", "WIF".
      * @var string
      */
     public string $asset;
