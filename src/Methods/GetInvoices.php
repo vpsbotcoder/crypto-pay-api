@@ -17,7 +17,8 @@ class GetInvoices extends BaseMethod
     public ?string $asset = null;
     /**
      * Optional. Fiat currency codes separated by a comma. 
-     * Supported fiat currencies: "USD", "EUR", "RUB", "BYN", "UAH", "GBP", "CNY", "KZT", "UZS", "GEL", "TRY", "AMD", "THB", "INR", "BRL", "IDR", "AZN", "AED", "PLN" and "ILS".
+     * Supported fiat currencies: "USD", "EUR", "RUB", "BYN", "UAH", "GBP", "CNY", "KZT", "UZS", "GEL", "TRY", 
+     * "AMD", "THB", "INR", "BRL", "IDR", "AZN", "AED", "PLN" and "ILS".
      * This field is used when querying invoices processed in fiat currencies. Defaults to all fiat currencies if not specified.
      * @var string|null
      */
@@ -28,7 +29,7 @@ class GetInvoices extends BaseMethod
      */
     public ?string $invoice_ids = null;
     /**
-     * Optional. Status of invoices to be returned. Available statuses: “active” and “paid”. Defaults to all statuses if not specified.
+     * Optional. Status of invoices to be returned. Available statuses: "active", "paid" and "expired". Defaults to all statuses if not specified.
      * @var string|null
      */
     public ?string $status = null;
@@ -36,10 +37,10 @@ class GetInvoices extends BaseMethod
      * Optional. Offset needed to return a specific subset of invoices. Default is 0.
      * @var int|null
      */
-    public ?int $offset = null;
+    public ?int $offset = 0;
     /**
      * Optional. Number of invoices to be returned. Values between 1-1000 are accepted. Defaults to 100.
      * @var int|null
      */
-    public ?int $count = null;
+    public ?int $count = 100;
 }
