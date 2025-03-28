@@ -10,6 +10,7 @@ use Klev\CryptoPayApi\Types\Balance;
 use Klev\CryptoPayApi\Types\Transfer as TypeTransfer;
 use Klev\CryptoPayApi\Types\Invoice;
 use Klev\CryptoPayApi\Types\Update;
+use Klev\CryptoPayApi\Types\ExchangeRate;
 use Psr\Http\Client\ClientInterface;
 
 /**
@@ -163,17 +164,24 @@ class CryptoPay
     }
 
     /**
-     * Use this method to get exchange rates of supported currencies. Returns array of currencies.
+     * Use this method to get exchange rates of supported currencies. Returns array of ExchangeRate objects.
      *
      * @link https://help.crypt.bot/crypto-pay-api#getExchangeRates
      *
-     * @return array
+     * @return ExchangeRate[]
      * @throws CryptoPayException
      */
     public function getExchangeRates(): array
     {
         $out = $this->request('getExchangeRates');
-        return $out['result'];
+        
+        if (!isset($out['result']) || !is_array($out['result'])) {
+            return [];
+        }
+        
+        return array_map(static function($item) {
+            return new ExchangeRate($item);
+        }, $out['result']);
     }
 
     /**
