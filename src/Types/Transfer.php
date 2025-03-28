@@ -15,6 +15,11 @@ class Transfer extends BaseType
      */
     public int $transfer_id;
     /**
+     * Unique UTF-8 string provided by the calling app (see transfer method). Returned from getTransfers.
+     * @var string
+     */
+    public string $spend_id;
+    /**
      * Telegram user ID the transfer was sent to.
      * @var string
      */
