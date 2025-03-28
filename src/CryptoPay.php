@@ -185,16 +185,21 @@ class CryptoPay
     }
 
     /**
-     * Use this method to get a list of supported currencies. Returns array of currencies.
+     * Use this method to get a list of supported currencies. Returns a list of currency codes.
      *
      * @link https://help.crypt.bot/crypto-pay-api#getCurrencies
      *
-     * @return array
+     * @return string[] Returns a list of fiat and cryptocurrency alphabetic codes.
      * @throws CryptoPayException
      */
     public function getCurrencies(): array
     {
         $out = $this->request('getCurrencies');
+        // Assuming $out['result'] is already the array of strings
+        if (!is_array($out['result'])) {
+            // Basic check, could add check for string elements if needed
+            throw new CryptoPayException('Unexpected response format for getCurrencies: result is not an array.');
+        }
         return $out['result'];
     }
 
