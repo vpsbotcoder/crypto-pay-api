@@ -82,6 +82,12 @@ class CreateInvoice extends BaseMethod
      * @var int|null
      */
     public ?int $expires_in = null;
+    /**
+     * Optional. Cryptocurrency alphabetic code to which the invoice amount will be converted after payment.
+     * Supported assets: "USDT", "TON", "TRX", "ETH", "SOL", "BTC", "LTC".
+     * @var string|null
+     */
+    public ?string $swap_to = null;
 
     /**
      * Constructor for creating an invoice.

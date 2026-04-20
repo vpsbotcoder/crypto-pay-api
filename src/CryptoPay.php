@@ -3,10 +3,16 @@
 namespace Klev\CryptoPayApi;
 
 use GuzzleHttp\Client;
+use Klev\CryptoPayApi\Methods\CreateCheck;
 use Klev\CryptoPayApi\Methods\CreateInvoice;
+use Klev\CryptoPayApi\Methods\GetChecks;
 use Klev\CryptoPayApi\Methods\GetInvoices;
+use Klev\CryptoPayApi\Methods\GetStats;
+use Klev\CryptoPayApi\Methods\GetTransfers;
 use Klev\CryptoPayApi\Methods\Transfer as MethodTransfer;
+use Klev\CryptoPayApi\Types\AppStats;
 use Klev\CryptoPayApi\Types\Balance;
+use Klev\CryptoPayApi\Types\Check;
 use Klev\CryptoPayApi\Types\Transfer as TypeTransfer;
 use Klev\CryptoPayApi\Types\Invoice;
 use Klev\CryptoPayApi\Types\Update;
@@ -201,6 +207,113 @@ class CryptoPay
             throw new CryptoPayException('Unexpected response format for getCurrencies: result is not an array.');
         }
         return $out['result'];
+    }
+
+    /**
+     * Use this method to delete an invoice created by your app. Returns true on success.
+     *
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#deleteInvoice
+     *
+     * @param int $invoiceId
+     * @return bool
+     * @throws CryptoPayException
+     */
+    public function deleteInvoice(int $invoiceId): bool
+    {
+        $out = $this->request('deleteInvoice', ['query' => ['invoice_id' => $invoiceId]]);
+        return $out['result'] === true;
+    }
+
+    /**
+     * Use this method to create a new check. On success, returns an object of the created check.
+     *
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#createCheck
+     *
+     * @param CreateCheck $createCheck
+     * @return Check
+     * @throws CryptoPayException
+     */
+    public function createCheck(CreateCheck $createCheck): Check
+    {
+        $out = $this->request('createCheck', ['query' => $createCheck->toArray()]);
+        return new Check($out['result']);
+    }
+
+    /**
+     * Use this method to delete a check created by your app. Returns true on success.
+     *
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#deleteCheck
+     *
+     * @param int $checkId
+     * @return bool
+     * @throws CryptoPayException
+     */
+    public function deleteCheck(int $checkId): bool
+    {
+        $out = $this->request('deleteCheck', ['query' => ['check_id' => $checkId]]);
+        return $out['result'] === true;
+    }
+
+    /**
+     * Use this method to get checks created by your app. On success, returns array of Check objects.
+     *
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#getChecks
+     *
+     * @param GetChecks|null $getChecks
+     * @return Check[]
+     * @throws CryptoPayException
+     */
+    public function getChecks(?GetChecks $getChecks = null): array
+    {
+        $params = $getChecks ? $getChecks->toArray() : [];
+        $out = $this->request('getChecks', ['query' => $params]);
+
+        if (!isset($out['result']['items'])) {
+            return [];
+        }
+
+        return array_map(static function($item) {
+            return new Check($item);
+        }, $out['result']['items']);
+    }
+
+    /**
+     * Use this method to get transfers created by your app. On success, returns array of Transfer objects.
+     *
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#getTransfers
+     *
+     * @param GetTransfers|null $getTransfers
+     * @return TypeTransfer[]
+     * @throws CryptoPayException
+     */
+    public function getTransfers(?GetTransfers $getTransfers = null): array
+    {
+        $params = $getTransfers ? $getTransfers->toArray() : [];
+        $out = $this->request('getTransfers', ['query' => $params]);
+
+        if (!isset($out['result']['items'])) {
+            return [];
+        }
+
+        return array_map(static function($item) {
+            return new TypeTransfer($item);
+        }, $out['result']['items']);
+    }
+
+    /**
+     * Use this method to get app statistics. On success, returns an AppStats object.
+     *
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#getStats
+     *
+     * @param GetStats|null $getStats
+     * @return AppStats
+     * @throws CryptoPayException
+     */
+    public function getStats(?GetStats $getStats = null): AppStats
+    {
+        $params = $getStats ? $getStats->toArray() : [];
+        $out = $this->request('getStats', ['query' => $params]);
+        return new AppStats($out['result']);
     }
 
     /**

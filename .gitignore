@@ -2,3 +2,6 @@
 vendor
 /dev
 /var
+whmcs_module/
+*.zip
+CLAUDE.md

@@ -174,4 +174,44 @@ class Invoice extends BaseType
      * @var string|null
      */
     public ?string $paid_btn_url = null;
+    /**
+     * Optional. Asset to which the invoice amount is swapped after payment.
+     * @var string|null
+     */
+    public ?string $swap_to = null;
+    /**
+     * Optional. True if the payment was successfully swapped.
+     * @var bool|null
+     */
+    public ?bool $is_swapped = null;
+    /**
+     * Optional. Unique identifier of the swap operation.
+     * @var string|null
+     */
+    public ?string $swapped_uid = null;
+    /**
+     * Optional. Cryptocurrency code the payment was swapped to.
+     * @var string|null
+     */
+    public ?string $swapped_to = null;
+    /**
+     * Optional. Exchange rate used for the swap.
+     * @var string|null
+     */
+    public ?string $swapped_rate = null;
+    /**
+     * Optional. Resulting amount after the swap.
+     * @var string|null
+     */
+    public ?string $swapped_output = null;
+    /**
+     * Optional. USD exchange rate of the swapped asset at the time of swap.
+     * @var string|null
+     */
+    public ?string $swapped_usd_rate = null;
+    /**
+     * Optional. Swap result amount expressed in USD.
+     * @var string|null
+     */
+    public ?string $swapped_usd_amount = null;
 }

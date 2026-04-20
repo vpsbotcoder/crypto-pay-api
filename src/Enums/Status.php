@@ -12,4 +12,5 @@ class Status
     public const ACTIVE = 'active';
     public const PAID = 'paid';
     public const EXPIRED = 'expired';
+    public const ACTIVATED = 'activated';
 }
