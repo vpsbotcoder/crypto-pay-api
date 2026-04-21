@@ -7,7 +7,7 @@ namespace Klev\CryptoPayApi\Types;
  * 
  * Represents an exchange rate between a source and target currency.
  *
- * @link https://help.crypt.bot/crypto-pay-api#ExchangeRate
+ * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#ExchangeRate
  */
 class ExchangeRate extends BaseType
 {

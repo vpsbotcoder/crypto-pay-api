@@ -5,7 +5,7 @@ namespace Klev\CryptoPayApi\Types;
 /**
  * class Transfer
  *
- * @link https://help.crypt.bot/crypto-pay-api#Transfer
+ * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#Transfer
  */
 class Transfer extends BaseType
 {
@@ -21,9 +21,9 @@ class Transfer extends BaseType
     public string $spend_id;
     /**
      * Telegram user ID the transfer was sent to.
-     * @var string
+     * @var int
      */
-    public string $user_id;
+    public int $user_id;
      /**
      * Cryptocurrency alphabetic code. 
      * Currently, can be "BNB", "BONK", "BTC", "CATI", "DOGE", "DOGS", "ETH", "GRAM", "HMSTR", "LTC", "MAJOR", "MELANIA", "MEMHASH", "MY", "NOT", "PEPE", "SOL", "TON", "TRUMP", "TRX", "USDC", "USDT", "WIF".

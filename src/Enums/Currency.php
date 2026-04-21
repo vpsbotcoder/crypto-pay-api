@@ -18,6 +18,7 @@ class Currency
     public const ETH = 'ETH';
     public const GRAM = 'GRAM';
     public const HMSTR = 'HMSTR';
+    public const JET = 'JET';
     public const LTC = 'LTC';
     public const MAJOR = 'MAJOR';
     public const MELANIA = 'MELANIA';

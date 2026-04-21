@@ -7,7 +7,7 @@ namespace Klev\CryptoPayApi\Types;
  * 
  * Represents the balance for a specific currency in the app.
  * 
- * @link https://help.crypt.bot/crypto-pay-api#Balance
+ * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#Balance
  */
 class Balance extends BaseType
 {

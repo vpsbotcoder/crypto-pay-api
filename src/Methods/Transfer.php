@@ -5,7 +5,7 @@ namespace Klev\CryptoPayApi\Methods;
 /**
  * class Transfer
  *
- * @link https://help.crypt.bot/crypto-pay-api#transfer
+ * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#transfer
  */
 class Transfer extends BaseMethod
 {

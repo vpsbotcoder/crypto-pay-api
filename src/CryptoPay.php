@@ -10,9 +10,11 @@ use Klev\CryptoPayApi\Methods\GetInvoices;
 use Klev\CryptoPayApi\Methods\GetStats;
 use Klev\CryptoPayApi\Methods\GetTransfers;
 use Klev\CryptoPayApi\Methods\Transfer as MethodTransfer;
+use Klev\CryptoPayApi\Types\AppInfo;
 use Klev\CryptoPayApi\Types\AppStats;
 use Klev\CryptoPayApi\Types\Balance;
 use Klev\CryptoPayApi\Types\Check;
+use Klev\CryptoPayApi\Types\CurrencyInfo;
 use Klev\CryptoPayApi\Types\Transfer as TypeTransfer;
 use Klev\CryptoPayApi\Types\Invoice;
 use Klev\CryptoPayApi\Types\Update;
@@ -25,7 +27,7 @@ use Psr\Http\Client\ClientInterface;
  * Crypto Pay is a payment system based on @CryptoBot that allows you to accept  payments in crypto and transfer coins
  * to users using our API.
  *
- * @link https://help.crypt.bot/crypto-pay-api
+ * @link https://help.send.tg/en/articles/10279948-crypto-pay-api
  */
 class CryptoPay
 {
@@ -82,21 +84,21 @@ class CryptoPay
      * Use this method to test your app's authentication token. Requires no parameters. On success, returns basic
      * information about an app.
      *
-     * @link https://help.crypt.bot/crypto-pay-api#getMe
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#getMe
      *
-     * @return array
+     * @return AppInfo
      * @throws CryptoPayException
      */
-    public function getMe(): array
+    public function getMe(): AppInfo
     {
         $out = $this->request('getMe');
-        return $out['result'];
+        return new AppInfo($out['result']);
     }
 
     /**
      * Use this method to create a new invoice. On success, returns an object of the created invoice.
      *
-     * @link https://help.crypt.bot/crypto-pay-api#createInvoice
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#createInvoice
      *
      * @param CreateInvoice $createInvoice
      * @return Invoice
@@ -104,17 +106,17 @@ class CryptoPay
      */
     public function createInvoice(CreateInvoice $createInvoice): Invoice
     {
-        $out = $this->request('createInvoice', ['query' => $createInvoice->toArray()]);
+        $out = $this->request('createInvoice', ['form_params' => $createInvoice->toArray()], 'POST');
         return new Invoice($out['result']);
     }
 
     /**
      * Use this method to send coins from your app's balance to a user. On success, returns object of completed
      * transfer. First, you need to enable this method in the security settings of your app.
-     * Open @CryptoBot (@CryptoTestnetBot for testnet), go to Crypto Pay → My Apps, choose an app, then go to
+     * Open @CryptoBot (@CryptoTestnetBot for testnet), go to Crypto Pay → My Apps, choose an app, then go to
      * Security -> Transfers... and tap Enable.
      *
-     * @link https://help.crypt.bot/crypto-pay-api#transfer
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#transfer
      *
      * @param MethodTransfer $transfer
      * @return TypeTransfer
@@ -122,14 +124,14 @@ class CryptoPay
      */
     public function transfer(MethodTransfer $transfer): TypeTransfer
     {
-        $out = $this->request('transfer', ['query' => $transfer->toArray()]);
+        $out = $this->request('transfer', ['form_params' => $transfer->toArray()], 'POST');
         return new TypeTransfer($out['result']);
     }
 
     /**
      * Use this method to get invoices of your app. On success, returns array of invoices.
      *
-     * @link https://help.crypt.bot/crypto-pay-api#getInvoices
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#getInvoices
      *
      * @return Invoice[]
      * @throws CryptoPayException
@@ -151,7 +153,7 @@ class CryptoPay
     /**
      * Use this method to get a balance of your app. Returns array of Balance objects.
      *
-     * @link https://help.crypt.bot/crypto-pay-api#getBalance
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#getBalance
      *
      * @return Balance[]
      * @throws CryptoPayException
@@ -159,11 +161,11 @@ class CryptoPay
     public function getBalance(): array
     {
         $out = $this->request('getBalance');
-        
+
         if (!isset($out['result']) || !is_array($out['result'])) {
             return [];
         }
-        
+
         return array_map(static function($item) {
             return new Balance($item);
         }, $out['result']);
@@ -172,7 +174,7 @@ class CryptoPay
     /**
      * Use this method to get exchange rates of supported currencies. Returns array of ExchangeRate objects.
      *
-     * @link https://help.crypt.bot/crypto-pay-api#getExchangeRates
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#getExchangeRates
      *
      * @return ExchangeRate[]
      * @throws CryptoPayException
@@ -180,33 +182,35 @@ class CryptoPay
     public function getExchangeRates(): array
     {
         $out = $this->request('getExchangeRates');
-        
+
         if (!isset($out['result']) || !is_array($out['result'])) {
             return [];
         }
-        
+
         return array_map(static function($item) {
             return new ExchangeRate($item);
         }, $out['result']);
     }
 
     /**
-     * Use this method to get a list of supported currencies. Returns a list of currency codes.
+     * Use this method to get a list of supported currencies. Returns an array of CurrencyInfo objects.
      *
-     * @link https://help.crypt.bot/crypto-pay-api#getCurrencies
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#getCurrencies
      *
-     * @return string[] Returns a list of fiat and cryptocurrency alphabetic codes.
+     * @return CurrencyInfo[]
      * @throws CryptoPayException
      */
     public function getCurrencies(): array
     {
         $out = $this->request('getCurrencies');
-        // Assuming $out['result'] is already the array of strings
-        if (!is_array($out['result'])) {
-            // Basic check, could add check for string elements if needed
+
+        if (!isset($out['result']) || !is_array($out['result'])) {
             throw new CryptoPayException('Unexpected response format for getCurrencies: result is not an array.');
         }
-        return $out['result'];
+
+        return array_map(static function($item) {
+            return new CurrencyInfo(is_array($item) ? $item : []);
+        }, $out['result']);
     }
 
     /**
@@ -220,7 +224,7 @@ class CryptoPay
      */
     public function deleteInvoice(int $invoiceId): bool
     {
-        $out = $this->request('deleteInvoice', ['query' => ['invoice_id' => $invoiceId]]);
+        $out = $this->request('deleteInvoice', ['form_params' => ['invoice_id' => $invoiceId]], 'POST');
         return $out['result'] === true;
     }
 
@@ -235,7 +239,7 @@ class CryptoPay
      */
     public function createCheck(CreateCheck $createCheck): Check
     {
-        $out = $this->request('createCheck', ['query' => $createCheck->toArray()]);
+        $out = $this->request('createCheck', ['form_params' => $createCheck->toArray()], 'POST');
         return new Check($out['result']);
     }
 
@@ -250,7 +254,7 @@ class CryptoPay
      */
     public function deleteCheck(int $checkId): bool
     {
-        $out = $this->request('deleteCheck', ['query' => ['check_id' => $checkId]]);
+        $out = $this->request('deleteCheck', ['form_params' => ['check_id' => $checkId]], 'POST');
         return $out['result'] === true;
     }
 
@@ -331,7 +335,7 @@ class CryptoPay
     /**
      * Getting webhook updates
      *
-     * @link https://help.crypt.bot/crypto-pay-api#webhook-updates
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#webhook-updates
      *
      * @param bool $throwVerifyError - Throw an exception if the webhook fails verification. The default is set to true.
      * If set to false, the exception will not be thrown, it will simply return false
@@ -358,7 +362,7 @@ class CryptoPay
      */
     public function getWebhookUpdatesRaw(): ?string
     {
-        if (!$this->webhookUpdatesRaw) {
+        if ($this->webhookUpdatesRaw === null) {
             $this->webhookUpdatesRaw = file_get_contents('php://input') ?: null;
 
         }
@@ -409,10 +413,11 @@ class CryptoPay
     /**
      * @param string $method
      * @param array $data
+     * @param string $httpMethod
      * @return array
      * @throws CryptoPayException
      */
-    private function request(string $method, array $data = []): array
+    private function request(string $method, array $data = [], string $httpMethod = 'GET'): array
     {
         try {
             $uri = $this->getApiUri($method);
@@ -422,16 +427,26 @@ class CryptoPay
                ]
             ]);
 
-            $response = $this->apiClient->get($uri, $params);
+            $response = $httpMethod === 'POST'
+                ? $this->apiClient->post($uri, $params)
+                : $this->apiClient->get($uri, $params);
 
             $body = (string)$response->getBody();
-            $out = json_decode($body,true, 512, JSON_THROW_ON_ERROR);
+            $out = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
 
-            if (isset($out['ok']) && $out['ok'] === true && isset($out['result'])) {
+            if (isset($out['ok']) && $out['ok'] === true && array_key_exists('result', $out)) {
                 return $out;
             }
 
+            if (isset($out['error']) && is_array($out['error'])) {
+                $code = $out['error']['code'] ?? 'unknown';
+                $name = $out['error']['name'] ?? 'UnknownError';
+                throw new CryptoPayException("API error {$code} ({$name}): " . $body);
+            }
+
             throw new CryptoPayException('Unexpected response: ' . $body);
+        } catch (CryptoPayException $e) {
+            throw $e;
         } catch (\Exception $e) {
             throw new CryptoPayException($e->getMessage());
         }
@@ -440,7 +455,7 @@ class CryptoPay
     /**
      * Webhook verification
      *
-     * @link https://help.crypt.bot/crypto-pay-api#verifying-webhook-updates
+     * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#verifying-webhook-updates
      *
      * @param bool $throwVerifyError - Throw an exception if the webhook fails verification. The default is set to true.
      * If set to false, the exception will not be thrown, it will simply return false
@@ -460,7 +475,7 @@ class CryptoPay
             $secret = hash('sha256', $this->token, true);
             $calcHash = hash_hmac('sha256', $this->getWebhookUpdatesRaw(), $secret);
 
-            if ($signature !== $calcHash) {
+            if (!hash_equals($calcHash, (string)$signature)) {
                 throw new CryptoPayException($error . ': invalid hash');
             }
 

@@ -5,7 +5,7 @@ namespace Klev\CryptoPayApi\Types;
 /**
  * class Invoice
  *
- * @link https://help.crypt.bot/crypto-pay-api#Invoice
+ * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#Invoice
  */
 class Invoice extends BaseType
 {
@@ -71,11 +71,11 @@ class Invoice extends BaseType
      */
     public ?string $fee_asset = null;
     /**
-     * Optional. Amount of service fees charged when the invoice was paid in float string format.
+     * Optional. Amount of service fees charged when the invoice was paid.
      * Available only if status is "paid".
-     * @var string|null
+     * @var float|null
      */
-    public ?string $fee_amount = null;
+    public ?float $fee_amount = null;
     /**
      * Deprecated. URL should be provided to the user to pay the invoice.
      * @var string|null

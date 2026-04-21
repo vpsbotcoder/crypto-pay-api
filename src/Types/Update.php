@@ -5,7 +5,7 @@ namespace Klev\CryptoPayApi\Types;
 /**
  * class Update
  *
- * @link https://help.crypt.bot/crypto-pay-api#webhooks
+ * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#webhooks
  */
 class Update extends BaseType
 {

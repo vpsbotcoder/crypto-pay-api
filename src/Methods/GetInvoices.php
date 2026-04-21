@@ -5,7 +5,7 @@ namespace Klev\CryptoPayApi\Methods;
 /**
  * class GetInvoices
  *
- * @link https://help.crypt.bot/crypto-pay-api#getInvoices
+ * @link https://help.send.tg/en/articles/10279948-crypto-pay-api#getInvoices
  */
 class GetInvoices extends BaseMethod
 {
