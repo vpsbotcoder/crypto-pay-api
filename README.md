@@ -2,7 +2,7 @@
 
 # vpsbotcoder/crypto-pay-api
 
-PHP library for the [Crypto Pay API](https://help.crypt.bot/crypto-pay-api) (@CryptoBot on Telegram). Requires PHP ≥ 7.4.
+PHP library for the [Crypto Pay API](https://help.send.tg/en/articles/10279948-crypto-pay-api) (@CryptoBot on Telegram). Requires PHP ≥ 7.4.
 
 Fork of [klev-o/crypto-pay-api](https://github.com/klev-o/crypto-pay-api) — extended with Checks, Transfers, Stats, Balance, ExchangeRate, and a full-featured WHMCS payment gateway module.
 
@@ -26,7 +26,7 @@ To use this fork directly (e.g. in a `composer.json`):
         { "type": "vcs", "url": "https://github.com/vpsbotcoder/crypto-pay-api.git" }
     ],
     "require": {
-        "klev-o/crypto-pay-api": "~1.2.0"
+        "klev-o/crypto-pay-api": "~1.5.0"
     }
 }
 ```
@@ -54,7 +54,7 @@ $api = new CryptoPay('YOUR_APP_TOKEN', true); // testnet
 ### getMe
 
 ```php
-$info = $api->getMe(); // ['app_id' => 123, 'name' => 'My App', ...]
+$info = $api->getMe(); // AppInfo object
 ```
 
 ### createInvoice
@@ -148,7 +148,7 @@ foreach ($rates as $r) {
 ### getCurrencies
 
 ```php
-$currencies = $api->getCurrencies(); // array of currency info arrays
+$currencies = $api->getCurrencies(); // CurrencyInfo[]
 ```
 
 ### getStats
