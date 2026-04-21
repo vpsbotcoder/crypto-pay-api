@@ -4,7 +4,7 @@
 
 PHP library for the [Crypto Pay API](https://help.send.tg/en/articles/10279948-crypto-pay-api) (@CryptoBot on Telegram). Requires PHP ≥ 7.4.
 
-Fork of [klev-o/crypto-pay-api](https://github.com/klev-o/crypto-pay-api) — extended with Checks, Transfers, Stats, Balance, ExchangeRate, and a full-featured WHMCS payment gateway module.
+Fork of [klev-o/crypto-pay-api](https://github.com/klev-o/crypto-pay-api) — extended with Checks, Transfers, Stats, typed Balance, ExchangeRate, AppInfo, and CurrencyInfo responses, plus POST-based mutating calls and timing-safe webhook verification.
 
 [![License](https://img.shields.io/github/license/vpsbotcoder/crypto-pay-api)](https://github.com/vpsbotcoder/crypto-pay-api/blob/main/LICENSE)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/vpsbotcoder/crypto-pay-api)
@@ -63,9 +63,9 @@ $info = $api->getMe(); // AppInfo object
 use Klev\CryptoPayApi\Methods\CreateInvoice;
 use Klev\CryptoPayApi\Enums\PaidBtnName;
 
-$invoice = new CreateInvoice('0.50', 'crypto', asset: 'TON');
+$invoice = new CreateInvoice('0.50', 'crypto', 'TON');
 // or fiat invoice:
-$invoice = new CreateInvoice('25.00', 'fiat', fiat: 'USD');
+$invoice = new CreateInvoice('25.00', 'fiat', 'USD');
 $invoice->paid_btn_name = PaidBtnName::CALLBACK;
 $invoice->paid_btn_url  = 'https://yoursite.com/return';
 
@@ -186,21 +186,6 @@ $api->getWebhookUpdates(); // validates HMAC signature, dispatches events
 ## Advanced (DI Container)
 
 See [`demo/advanced.php`](demo/advanced.php) for a full example using PHP-DI and Monolog.
-
----
-
-## WHMCS Module
-
-A production-ready WHMCS payment gateway module is available as a separate release asset. Download the latest `cryptopay_whmcs_module.zip` from the [Releases page](https://github.com/vpsbotcoder/crypto-pay-api/releases).
-
-**Features:**
-- Fiat invoices with accepted-asset filtering
-- Testnet/mainnet toggle
-- Webhook signature verification + replay-attack protection with a randomized endpoint token
-- Configurable payment tolerance for rounding drift
-- Optional Telegram notifications
-- Exchange rate caching, invoice expiry tied to WHMCS due dates
-- Logging level control
 
 ---
 
